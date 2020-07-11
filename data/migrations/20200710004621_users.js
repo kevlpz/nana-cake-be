@@ -38,5 +38,9 @@ exports.up = function(knex) {
 };
 
 exports.down = function(knex) {
-  
+    return knex.schema
+        .dropTableIfExists('photos')
+        .dropTableIfExists('products')
+        .dropTableIfExists('categories')
+        .dropTableIfExists('users');
 };
