@@ -30,4 +30,20 @@ router.post('/', (req, res) => {
     }
 })
 
+router.put('/:id', (req, res) => {
+    const { id } = req.params;
+    const data = req.body;
+
+    if(data) {
+        Products.update(id, data)
+            .then(product => res.status(201).json(product))
+            .catch(err => {
+                console.log(err);
+                res.status(500).json({error: 'Cannot fulfil request at this time.'});
+            })
+    } else {
+        res.status(400).json({error: 'Must include product name and category'});
+    }
+})
+
 module.exports = router;
