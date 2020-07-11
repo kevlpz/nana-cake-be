@@ -4,7 +4,8 @@ module.exports = {
     get,
     getById,
     add,
-    update
+    update,
+    del
 }
 
 function get() {
@@ -32,4 +33,10 @@ function update(id, product) {
                 return getById(id)
             }
         });
+}
+
+function del(id) {
+    return db('products')
+        .where({id: id})
+        .del();
 }
