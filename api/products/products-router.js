@@ -42,7 +42,7 @@ router.put('/:id', (req, res) => {
                 res.status(500).json({error: 'Internal server error'});
             });
     } else {
-        res.status(400).json({error: 'Must include product name and category'});
+        res.status(400).json({error: 'Must provide information to update'});
     }
 });
 
