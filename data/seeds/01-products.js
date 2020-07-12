@@ -14,13 +14,13 @@ exports.seed = function(knex) {
         {
           id: 2,
           name: 'Squirtle',
-          categoryID: '1',
+          categoryID: '2',
           description: '100% yarn'
         },
         {
           id: 3,
           name: 'Bulbasaur',
-          categoryID: '1',
+          categoryID: '3',
           description: '100% yarn'
         }
       ]);
