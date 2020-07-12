@@ -16,10 +16,10 @@ const sessionConfig = {
         httpOnly: true
     },
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: true // false for production
 }
 
-server.use(helmet);
+server.use(helmet());
 server.use(express.json());
 server.use(session(sessionConfig))
 

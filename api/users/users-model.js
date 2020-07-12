@@ -3,6 +3,7 @@ const db = require('../../data/knexConfig');
 module.exports = {
     get,
     getById,
+    getByUsername,
     add
 }
 
@@ -13,6 +14,12 @@ function get() {
 function getById(id) {
     return db('users')
     .where({id: id})
+    .first();
+}
+
+function getByUsername(username) {
+    return db('users')
+    .where({username: username})
     .first();
 }
 
