@@ -22,6 +22,7 @@ router.get('/', (req, res) => {
         });
 });
 
+// register new user
 router.post('/', (req, res) => {
     const { username, password } = req.body;
     const hashedPassword = bcrypt.hashSync(password, 10);
