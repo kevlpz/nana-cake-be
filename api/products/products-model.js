@@ -9,7 +9,9 @@ module.exports = {
 }
 
 function get() {
-    return db('products');
+    return db('products')
+        .join('photos', 'products.id', '=', 'photos.productID')
+        .select('product.id', 'name', 'categoryID', 'description', 'url')
 }
 
 function getById(id) {

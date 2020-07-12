@@ -7,7 +7,8 @@ exports.seed = function(knex) {
       return knex('photos').insert([
         {id: 1, productID: 1, url: 'charmander url'},
         {id: 2, productID: 2, url: 'squirtle url'},
-        {id: 3, productID: 3, url: 'bulbasaur url'}
+        {id: 3, productID: 3, url: 'bulbasaur url'},
+        {id: 4, productID: 1, url: 'charmander url 2'}
       ]);
     });
 };
