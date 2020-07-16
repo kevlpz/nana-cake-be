@@ -7,8 +7,8 @@ const router = express.Router();
 // get all products
 router.get('/', (req, res) => {
     Products.get()
-        .then(products => {
-            res.status(200).json(products);
+        .then(items => {
+            res.status(200).json(items);
         })
         .catch(err => {
             console.log(err);

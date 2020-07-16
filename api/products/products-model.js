@@ -12,9 +12,21 @@ module.exports = {
 }
 
 function get() {
+    // return db('products')
+    //     .join('photos', 'products.id', '=', 'photos.productID')
+    //     .select('product.id', 'name', 'categoryID', 'description', 'url')
+
     return db('products')
-        .join('photos', 'products.id', '=', 'photos.productID')
-        .select('product.id', 'name', 'categoryID', 'description', 'url')
+        .then(products => {
+            return db('photos')
+                .then(photos => {
+                    const items = {
+                        products: products,
+                        photos: photos
+                    }
+                    return items;
+                })
+        })
 }
 
 function getCrochet() {
