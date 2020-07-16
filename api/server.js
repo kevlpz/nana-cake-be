@@ -2,6 +2,7 @@ const express = require('express');
 const server = express();
 const session = require('express-session');
 const helmet = require('helmet');
+const Cors = require('cors');
 require('dotenv').config();
 
 const productsRouter = require('./products/products-router');
@@ -19,6 +20,7 @@ const sessionConfig = {
     saveUninitialized: true // false for production
 }
 
+server.use(Cors());
 server.use(helmet());
 server.use(express.json());
 server.use(session(sessionConfig))
