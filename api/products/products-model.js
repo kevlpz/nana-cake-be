@@ -14,7 +14,7 @@ module.exports = {
 function get() {
     // return db('products')
     //     .join('photos', 'products.id', '=', 'photos.productID')
-    //     .select('product.id', 'name', 'categoryID', 'description', 'url')
+    //     .select('products.id', 'name', 'categoryID', 'description', 'url')
 
     return db('products')
         .then(products => {
@@ -25,29 +25,53 @@ function get() {
                         photos: photos
                     }
                     return items;
-                })
-        })
+                });
+        });
 }
 
 function getCrochet() {
     return db('products')
         .where({categoryID: 1})
-        .join('photos', 'products.id', '=', 'photos.productID')
-        .select('products.id', 'name', 'categoryID', 'description', 'url')
+        .then(products => {
+            return db('photos')
+                .then(photos => {
+                    const items = {
+                        products: products,
+                        photos: photos.filter(photo => photo.productID === 1)
+                    }
+                    return items;
+                });
+        });
 }
 
 function getStickers() {
     return db('products')
         .where({categoryID: 2})
-        .join('photos', 'products.id', '=', 'photos.productID')
-        .select('products.id', 'name', 'categoryID', 'description', 'url')
+        .then(products => {
+            return db('photos')
+                .then(photos => {
+                    const items = {
+                        products: products,
+                        photos: photos.filter(photo => photo.productID === 2)
+                    }
+                    return items;
+                });
+        });
 }
 
 function getButtons() {
     return db('products')
-        .where({categoryID: 3})
-        .join('photos', 'products.id', '=', 'photos.productID')
-        .select('products.id', 'name', 'categoryID', 'description', 'url')
+    .where({categoryID: 3})
+    .then(products => {
+        return db('photos')
+            .then(photos => {
+                const items = {
+                    products: products,
+                    photos: photos.filter(photo => photo.productID === 3)
+                }
+                return items;
+            });
+    });
 }
 
 function getById(id) {
@@ -68,7 +92,7 @@ function update(id, product) {
         .update(product, 'id')
         .then(count => {
             if(count > 0) {
-                return getById(id)
+                return getById(id);
             }
         });
 }
