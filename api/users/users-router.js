@@ -2,20 +2,11 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 
 const Users = require('./Users-model');
+const { authenticate } = require('./authenticate');
+const passport = require('passport');
 
 const router = express.Router();
 
-
-const authenticate = (req, res, next) => {
-    console.log('authenticate');
-    if(req.session.user && req.session.user.admin) {
-        console.log(req.session.user);
-        console.log(req.session.user.admin);
-        next();
-    } else {
-        res.status(401).json({error: 'User not authorized'});
-    }
-}
 
 router.get('/', authenticate, (req, res) => {
     Users.get()
@@ -56,26 +47,38 @@ router.post('/register', (req, res) => {
 });
 
 // login
-router.post('/login', (req, res) => {
-    const { username, password } = req.body;
-
-    if(username && password) {
-        Users.getByUsername(username)
-            .then(user => {
-                if(user && bcrypt.compareSync(password, user.password)) {
-                    req.session.user = user;
-                    res.status(200).json({...user, password: undefined});
-                } else {
-                    res.status(400).json({error: 'Incorrect username or password'});
-                }
-            })
-            .catch(err => {
-                console.log(err);
-                res.status(500).json({error: 'Internal server error'});
-            });
+router.post('/login', passport.authenticate('local'), (req, res) => {
+    if(req.user) {
+        res.status(200).json(req.user);
     } else {
-        res.status(401).json({error: 'Must include username and password'});
+        res.status(401).json({error: 'Invalid username or password'});
     }
 });
+
+// logout
+router.get('/logout', (req, res) => {
+    if(req.user) {
+        req.logout();
+        res.status(200).json({message: 'Successfully logged out'});
+    } else {
+        res.status(200).json({message: 'Already logged out'});
+    }
+})
+
+router.get('/:id', authenticate, async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const user = await Users.getById(id);
+        if(user){
+            res.status(200).json(user);
+        } else {
+            res.status(404).json({error: 'User not found'});
+        }
+    } catch(err) {
+        console.log(err);
+        res.status(500).json({error: 'Internal server issue'});
+    }
+})
 
 module.exports = router;

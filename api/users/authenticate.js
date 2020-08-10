@@ -1,7 +1,14 @@
-module.exports = (req, res, next) => {
-    if(req.session && req.session.user) {
-        next();
-    } else {
-        res.status(401).json({error: 'User not authorized'});
+module.exports = {
+    authenticate: (req, res, next) => {
+        if(req.isAuthenticated()) {
+            return next();
+        }
+        res.status(401).json({message: 'Unauthorized'})
+    },
+    authAdmin: (req, res, next) => {
+        if(req.isAuthenticated() && req.user.admin) {
+            return next();
+        }
+        res.status(401).json({message: 'Unauthorized'})
     }
 }

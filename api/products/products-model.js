@@ -12,10 +12,6 @@ module.exports = {
 }
 
 function get() {
-    // return db('products')
-    //     .join('photos', 'products.id', '=', 'photos.productID')
-    //     .select('products.id', 'name', 'categoryID', 'description', 'url')
-
     return db('products')
         .then(products => {
             return db('photos')

@@ -1,8 +1,9 @@
 const express = require('express');
-
 const Products = require('./products-model');
+const { authenticate, authAdmin } = require('../users/authenticate');
 
 const router = express.Router();
+
 
 // get all products
 router.get('/', (req, res) => {
@@ -53,7 +54,7 @@ router.get('/buttons', (req, res) => {
 });
 
 // post product
-router.post('/', (req, res) => {
+router.post('/', authAdmin, (req, res) => {
     const data = req.body;
 
     if(data.name && data.categoryID) {
@@ -69,7 +70,7 @@ router.post('/', (req, res) => {
 });
 
 // update product
-router.put('/:id', (req, res) => {
+router.put('/:id', authAdmin, (req, res) => {
     const { id } = req.params;
     const data = req.body;
 
@@ -86,7 +87,7 @@ router.put('/:id', (req, res) => {
 });
 
 // delete product
-router.delete('/:id', (req, res) => {
+router.delete('/:id', authAdmin, (req, res) => {
     const { id } = req.params;
 
     Products.del(id)
