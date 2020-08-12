@@ -49,7 +49,7 @@ router.post('/register', (req, res) => {
 // login
 router.post('/login', passport.authenticate('local'), (req, res) => {
     if(req.user) {
-        res.status(200).json(req.user);
+        res.status(200).json({...req.user, password: undefined});
     } else {
         res.status(401).json({error: 'Invalid username or password'});
     }
@@ -57,6 +57,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
 
 // logout
 router.get('/logout', (req, res) => {
+    console.log(req.user);
     if(req.user) {
         req.logout();
         res.status(200).json({message: 'Successfully logged out'});
