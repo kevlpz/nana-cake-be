@@ -4,7 +4,8 @@ module.exports = {
     get,
     getById,
     getByUsername,
-    add
+    add,
+    changePassword
 }
 
 function get() {
@@ -27,4 +28,13 @@ function add(user) {
     return db('users')
         .insert(user, 'id')
         .then(([id]) => getById(id));
+}
+
+function changePassword(id, newPassword) {
+    return('users')
+        .where({id: id})
+        .first()
+        .update({
+            password: newPassword
+        });
 }

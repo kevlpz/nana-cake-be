@@ -2,7 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 
 const Users = require('./Users-model');
-const { authenticate } = require('./authenticate');
+const { authenticate, authAdmin } = require('./authenticate');
 const passport = require('passport');
 
 const router = express.Router();
@@ -81,5 +81,30 @@ router.get('/:id', authenticate, async (req, res) => {
         res.status(500).json({error: 'Internal server issue'});
     }
 })
+
+// Change Password
+router.put('/:id', authAdmin, async (req, res) => {
+    const { id } = req.params;
+    const { oldPass, newPass, confirmPass } = req.body;
+    console.log('hit change route');
+
+    if(newPass === confirmPass) {
+        console.log('after if');
+        try {
+            const user = await Users.getById(id);
+            const isMatch = await bcrypt.compare(oldPass, user.password);
+            if(isMatch) {
+                console.log('after isMatch');
+                Users.changePassword(id, newPassword)
+                    .then(res => console.log(res))
+                    .catch(err => console.log(err));
+            }
+        } catch {
+            res.status(500).json({error: 'Internal server error'});
+        }
+    } else {
+        res.status(401).json({error: 'Incorrect username or password'});
+    }
+});
 
 module.exports = router;

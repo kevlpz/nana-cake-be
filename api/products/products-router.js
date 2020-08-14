@@ -91,7 +91,7 @@ router.delete('/:id', authAdmin, (req, res) => {
     const { id } = req.params;
 
     Products.del(id)
-        .then(() => res.status(200).end())
+        .then(() => res.status(200).json({message: 'Successfully deleted'}))
         .catch(err => {
             console.log(err);
             res.status(500).json({error: 'Internal server error'});
