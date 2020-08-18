@@ -66,6 +66,11 @@ router.get('/logout', (req, res) => {
     }
 })
 
+// verify user
+router.get('/user', (req, res) => {
+    res.status(200).json({...req.user, password: undefined});
+});
+
 router.get('/:id', authenticate, async (req, res) => {
     const { id } = req.params;
 
